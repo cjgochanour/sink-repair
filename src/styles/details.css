@@ -1,0 +1,32 @@
+#submitRequest {
+    margin: 1rem 0 2rem 1.5rem;
+    padding: 0.5rem;
+    background-color: rgb(223, 54, 133);
+    color: rgb(230, 220, 255);
+    font-size: 15px;
+    width: 150px;
+}
+
+.title {
+    padding-left: 1em;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 2em;
+}
+
+.serviceForm {
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.label {
+    font-size: 15px;
+}
+
+.serviceRequests {
+    display: flex;
+    flex-direction: column;
+}

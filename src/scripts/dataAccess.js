@@ -14,6 +14,12 @@ export const fetchRequests = () => {
         });
 };
 
+export const deleteRequest = (id) => {
+    return fetch(`${API}/requests/${id}`, { method: "DELETE" }).then(() =>
+        mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+    );
+};
+
 export const getRequests = () => applicationState.requests.map((request) => ({ ...request }));
 
 export const sendRequest = (userServiceRequest) => {

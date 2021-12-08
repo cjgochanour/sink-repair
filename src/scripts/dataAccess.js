@@ -5,10 +5,6 @@ const applicationState = {
     requests: [],
 };
 
-mainContainer.addEventListener("stateChanged", (customEvent) => {
-    render();
-});
-
 export const fetchRequests = () => {
     return fetch(`${API}/requests`)
         .then((response) => response.json())

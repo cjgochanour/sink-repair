@@ -1,4 +1,4 @@
-import { deleteRequest, getRequests, mainContainer } from "./dataAccess.js";
+import { deleteRequest, getRequests, mainContainer, getPlumberes } from "./dataAccess.js";
 
 mainContainer.addEventListener("click", (click) => {
     if (click.target.id.startsWith("request")) {
@@ -9,18 +9,26 @@ mainContainer.addEventListener("click", (click) => {
 
 export const Requests = () => {
     const requests = getRequests();
+    const plumbers = getPlumberes();
+    const convertRequestToListElement = (x) => `<li>
+    ${x.description}
+    <select class="plumbers" id="plumbers">
+        <option value="">Choose</option>
+        ${plumbers
+            .map((plumber) => {
+                return `<option value="${x.id}--${plumber.id}">${plumber.name}</option>`;
+            })
+            .join("")}
+    </select>
+    <button class="request__delete"
+            id="request--${x.id}">
+        Delete
+    </button>
+</li>`;
 
     let html = `
         <ul>
-            ${requests.map(
-                (requestList) => `<li>
-                ${requestList.description}
-                <button class="request__delete"
-                        id="request--${requestList.id}">
-                    Delete
-                </button>
-            </li>`
-            )}
+            ${requests.map((request) => convertRequestToListElement(request))}
         </ul>
     `;
 

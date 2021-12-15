@@ -3,6 +3,7 @@ export const mainContainer = document.querySelector("#container");
 
 const applicationState = {
     requests: [],
+    plumbers: [],
 };
 
 export const fetchRequests = () => {
@@ -13,6 +14,16 @@ export const fetchRequests = () => {
             applicationState.requests = serviceRequests;
         });
 };
+
+export const fetchPlumbers = () => {
+    return fetch(`${API}/plumbers`)
+        .then((res) => res.json())
+        .then((res) => {
+            applicationState.plumbers = res;
+        });
+};
+
+export const getPlumberes = () => applicationState.plumbers.map((plumber) => ({ ...plumber }));
 
 export const deleteRequest = (id) => {
     return fetch(`${API}/requests/${id}`, { method: "DELETE" }).then(() =>

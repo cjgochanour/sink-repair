@@ -1,5 +1,5 @@
 import { SinkRepair } from "./SinkRepair.js";
-import { fetchRequests } from "./dataAccess.js";
+import { fetchRequests, fetchPlumbers } from "./dataAccess.js";
 import { mainContainer } from "./dataAccess.js";
 
 mainContainer.addEventListener("stateChanged", (customEvent) => {
@@ -7,9 +7,11 @@ mainContainer.addEventListener("stateChanged", (customEvent) => {
 });
 
 const render = () => {
-    fetchRequests().then(() => {
-        mainContainer.innerHTML = SinkRepair();
-    });
+    fetchRequests()
+        .then(() => fetchPlumbers())
+        .then(() => {
+            mainContainer.innerHTML = SinkRepair();
+        });
 };
 
 render();

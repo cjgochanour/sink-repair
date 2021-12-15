@@ -1,9 +1,22 @@
-import { deleteRequest, getRequests, mainContainer, getPlumberes } from "./dataAccess.js";
+import { deleteRequest, getRequests, mainContainer, getPlumberes, saveCompletion } from "./dataAccess.js";
 
 mainContainer.addEventListener("click", (click) => {
     if (click.target.id.startsWith("request")) {
         const [, requestId] = click.target.id.split("--");
         deleteRequest(parseInt(requestId));
+    }
+});
+
+mainContainer.addEventListener("change", (event) => {
+    if (event.target.id === "plumbers") {
+        const [requestId, plumberId] = event.target.value.split("--");
+        const dateInt = new Date(Date.now());
+        const completion = {
+            requestId,
+            plumberId,
+            date: dateInt.toLocaleString(),
+        };
+        saveCompletion(completion);
     }
 });
 

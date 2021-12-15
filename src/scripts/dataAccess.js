@@ -4,6 +4,7 @@ export const mainContainer = document.querySelector("#container");
 const applicationState = {
     requests: [],
     plumbers: [],
+    completions: [],
 };
 
 export const fetchRequests = () => {
@@ -47,4 +48,21 @@ export const sendRequest = (userServiceRequest) => {
         .then(() => {
             mainContainer.dispatchEvent(new CustomEvent("stateChanged"));
         });
+};
+
+export const saveCompletion = (completion) => {
+    const fetchOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(completion),
+    };
+    return fetch(`${API}/completions`, fetchOptions).then(() =>
+        mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+    );
+};
+
+export const fetchCompletions = () => {
+    return fetch(`${API}/completions`)
+        .then((res) => res.json())
+        .then((com) => (applicationState.completions = com));
 };

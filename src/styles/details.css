@@ -30,3 +30,18 @@
     display: flex;
     flex-direction: column;
 }
+
+.isComplete {
+    background-color: lightpink;
+    margin: 1em;
+    padding: 1em;
+}
+.incomplete {
+    background-color: lightgray;
+    margin: 1em;
+    padding: 1em;
+}
+
+ul {
+    list-style-type: none;
+}

@@ -1,6 +1,8 @@
 const API = "http://localhost:8088";
 export const mainContainer = document.querySelector("#container");
 
+// if the request id is found in the completions id, put it last
+
 const applicationState = {
     requests: [],
     plumbers: [],
@@ -32,7 +34,13 @@ export const deleteRequest = (id) => {
     );
 };
 
-export const getRequests = () => applicationState.requests.map((request) => ({ ...request }));
+export const getRequests = () => {
+    const newArray = applicationState.requests.map((request) => ({ ...request }));
+    newArray.sort((a, b) => {
+        return a.isComplete - b.isComplete;
+    });
+    return newArray;
+};
 
 export const sendRequest = (userServiceRequest) => {
     const fetchOptions = {
@@ -51,14 +59,25 @@ export const sendRequest = (userServiceRequest) => {
 };
 
 export const saveCompletion = (completion) => {
-    const fetchOptions = {
+    const postOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(completion),
     };
-    return fetch(`${API}/completions`, fetchOptions).then(() =>
-        mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
-    );
+    const patchOptions = {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            isComplete: true,
+        }),
+    };
+    return fetch(`${API}/completions`, postOptions)
+        .then((res) => res.json())
+        .then((toSet) =>
+            fetch(`${API}/requests/${toSet.requestId}`, patchOptions).then(() =>
+                mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+            )
+        );
 };
 
 export const fetchCompletions = () => {

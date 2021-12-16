@@ -12,8 +12,8 @@ mainContainer.addEventListener("change", (event) => {
         const [requestId, plumberId] = event.target.value.split("--");
         const dateInt = new Date(Date.now());
         const completion = {
-            requestId,
-            plumberId,
+            requestId: parseInt(requestId),
+            plumberId: parseInt(plumberId),
             date: dateInt.toLocaleString(),
         };
         saveCompletion(completion);
@@ -23,16 +23,31 @@ mainContainer.addEventListener("change", (event) => {
 export const Requests = () => {
     const requests = getRequests();
     const plumbers = getPlumberes();
-    const convertRequestToListElement = (x) => `<li>
+    const completeCheck = (y) => {
+        if (y.isComplete) {
+            return `class="isComplete"`;
+        } else {
+            return `class="incomplete"`;
+        }
+    };
+    const optionsCheck = (z) => {
+        if (!z.isComplete) {
+            return `<select class="plumbers" id="plumbers">
+            <option value="">Choose</option>
+            ${plumbers
+                .map((plumber) => {
+                    return `<option value="${z.id}--${plumber.id}">${plumber.name}</option>`;
+                })
+                .join("")}
+        </select>`;
+        } else {
+            return "";
+        }
+    };
+
+    const convertRequestToListElement = (x) => `<li ${completeCheck(x)}>
     ${x.description}
-    <select class="plumbers" id="plumbers">
-        <option value="">Choose</option>
-        ${plumbers
-            .map((plumber) => {
-                return `<option value="${x.id}--${plumber.id}">${plumber.name}</option>`;
-            })
-            .join("")}
-    </select>
+    ${optionsCheck(x)}
     <button class="request__delete"
             id="request--${x.id}">
         Delete
@@ -41,7 +56,7 @@ export const Requests = () => {
 
     let html = `
         <ul>
-            ${requests.map((request) => convertRequestToListElement(request))}
+            ${requests.map((request) => convertRequestToListElement(request)).join("")}
         </ul>
     `;
 

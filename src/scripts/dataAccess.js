@@ -1,4 +1,4 @@
-const API = "http://localhost:8088";
+const API = "sink-repair-dev22.us-east-1.elasticbeanstalk.com";
 export const mainContainer = document.querySelector("#container");
 
 // if the request id is found in the completions id, put it last
